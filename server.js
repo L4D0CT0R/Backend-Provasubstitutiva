@@ -26,13 +26,13 @@ async function addSensorData(newData) {
     
     // Insira no banco de dados com o timestamp ajustado
     return new Promise((resolve, reject) => {
-        db.run(`INSERT INTO dados_sensores (sensor_id, temperatura, umidade, timestamp) VALUES (?, ?, ?, ?)`,
+        db.run(`INSERT INTO dados_sensores (sensor_id, temperatura, umidade, timestamp) VALUES (?, ?, ?, now())`,
             [newData.sensor_id, newData.temperatura, newData.umidade, timestamp],
             (err) => {
                 if (err) {
                     return reject(err); // Se houver erro, rejeita a promessa
                 }
-                console.log('Dados inseridos no banco de dados com sucesso.');
+                console.log('Dados inseridos no banco de dados com sucesso.'+timestamp);
                 io.emit('sensorDataUpdate', newData); // Emitindo os dados atualizados
                 resolve(); // Se tudo correr bem, resolve a promessa
             });
@@ -171,7 +171,7 @@ const authenticateJWT = (req, res, next) => {
 };
 // Rota para buscar todos os dados dos sensores (protegida por JWT)
 app.get('/dados-sensores', authenticateJWT, (req, res) => {
-    const query = `SELECT * FROM dados_sensores`;
+    const query = `SELECT sensor_id, temperatura, umidade, datetime(timestamp, '-3 hours') AS timestamp FROM dados_sensores`;
     db.all(query, [], (err, rows) => {
         if (err) {
             console.error('Erro ao buscar dados no banco de dados:', err.message);
