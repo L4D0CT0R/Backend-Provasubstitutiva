@@ -26,8 +26,8 @@ Para rodar este backend, siga os seguintes passos:
 
 1. **Clone o repositório**:
    ```bash
-   git clone https://github.com/username/repo-name.git
-   cd repo-name
+   https://github.com/L4D0CT0R/Backend-Provasubstitutiva
+   cd Backend-Provasubstitutiva
 
 2. **instalando dependência**:
     npm install
